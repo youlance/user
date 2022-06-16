@@ -30,4 +30,7 @@ migratedown1:
 sqlc:
 	sqlc generate -f db/sqlc_config/sqlc.yaml
 
-.PHONY: tidy migrate_create postgres createdb dropdb migrateup migrateup1 migratedown migratedown1 sqlc
+server:
+	go run main.go
+
+.PHONY: tidy migrate_create postgres createdb dropdb migrateup migrateup1 migratedown migratedown1 sqlc server

@@ -29,12 +29,10 @@ func (server *Server) setupRouter() {
 	router.POST("/user", server.CreateUser)
 	router.GET("/user/:username", server.GetUser)
 
-	router.POST("/follower", CreateUserFollower)
-	router.GET("/follower/:username", GetUserFollower)
-	router.GET("/followee/:username", GetUserFollowee)
-	router.GET("/followers/:username", GetFollowers)
-	router.GET("/followees/:username", GetFollowees)
-	router.DELETE("/follower/:username", DeleteFollower)
+	router.POST("/follower", server.CreateUserFollower)
+	router.GET("/followers", server.ListFollowers)
+	router.GET("/followees", server.ListFollowees)
+	router.DELETE("/follower", server.DeleteFollower)
 
 	server.router = router
 }

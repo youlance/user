@@ -32,52 +32,35 @@ func (q *Queries) CreateFollower(ctx context.Context, arg CreateFollowerParams) 
 
 const deleteFollower = `-- name: DeleteFollower :exec
 DELETE FROM user_followers
-WHERE follower_id = $1
+WHERE follower_id = $1 AND followee_id = $2
 `
 
-func (q *Queries) DeleteFollower(ctx context.Context, followerID string) error {
-	_, err := q.db.ExecContext(ctx, deleteFollower, followerID)
+type DeleteFollowerParams struct {
+	FollowerID string `json:"follower_id"`
+	FolloweeID string `json:"followee_id"`
+}
+
+func (q *Queries) DeleteFollower(ctx context.Context, arg DeleteFollowerParams) error {
+	_, err := q.db.ExecContext(ctx, deleteFollower, arg.FollowerID, arg.FolloweeID)
 	return err
-}
-
-const getFollowee = `-- name: GetFollowee :one
-SELECT follower_id, followee_id FROM user_followers
-WHERE follower_id = $1 LIMIT 1
-`
-
-func (q *Queries) GetFollowee(ctx context.Context, followerID string) (UserFollower, error) {
-	row := q.db.QueryRowContext(ctx, getFollowee, followerID)
-	var i UserFollower
-	err := row.Scan(&i.FollowerID, &i.FolloweeID)
-	return i, err
-}
-
-const getFollower = `-- name: GetFollower :one
-SELECT follower_id, followee_id FROM user_followers
-WHERE followee_id = $1 LIMIT 1
-`
-
-func (q *Queries) GetFollower(ctx context.Context, followeeID string) (UserFollower, error) {
-	row := q.db.QueryRowContext(ctx, getFollower, followeeID)
-	var i UserFollower
-	err := row.Scan(&i.FollowerID, &i.FolloweeID)
-	return i, err
 }
 
 const listFollowees = `-- name: ListFollowees :many
 SELECT follower_id, followee_id FROM user_followers
-ORDER BY follower_id
-LIMIT $1
-OFFSET $2
+WHERE follower_id = $1
+ORDER BY followee_id
+LIMIT $2
+OFFSET $3
 `
 
 type ListFolloweesParams struct {
-	Limit  int32 `json:"limit"`
-	Offset int32 `json:"offset"`
+	FollowerID string `json:"follower_id"`
+	Limit      int32  `json:"limit"`
+	Offset     int32  `json:"offset"`
 }
 
 func (q *Queries) ListFollowees(ctx context.Context, arg ListFolloweesParams) ([]UserFollower, error) {
-	rows, err := q.db.QueryContext(ctx, listFollowees, arg.Limit, arg.Offset)
+	rows, err := q.db.QueryContext(ctx, listFollowees, arg.FollowerID, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
@@ -101,18 +84,20 @@ func (q *Queries) ListFollowees(ctx context.Context, arg ListFolloweesParams) ([
 
 const listFollowers = `-- name: ListFollowers :many
 SELECT follower_id, followee_id FROM user_followers
-ORDER BY followee_id
-LIMIT $1
-OFFSET $2
+WHERE followee_id = $1
+ORDER BY follower_id
+LIMIT $2
+OFFSET $3
 `
 
 type ListFollowersParams struct {
-	Limit  int32 `json:"limit"`
-	Offset int32 `json:"offset"`
+	FolloweeID string `json:"followee_id"`
+	Limit      int32  `json:"limit"`
+	Offset     int32  `json:"offset"`
 }
 
 func (q *Queries) ListFollowers(ctx context.Context, arg ListFollowersParams) ([]UserFollower, error) {
-	rows, err := q.db.QueryContext(ctx, listFollowers, arg.Limit, arg.Offset)
+	rows, err := q.db.QueryContext(ctx, listFollowers, arg.FolloweeID, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
