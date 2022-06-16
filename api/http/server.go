@@ -28,6 +28,7 @@ func (server *Server) setupRouter() {
 
 	router.POST("/user", server.CreateUser)
 	router.GET("/user/:username", server.GetUser)
+	router.POST("/user/verify", server.VerifyUser)
 
 	router.POST("/follower", server.CreateUserFollower)
 	router.GET("/followers", server.ListFollowers)
