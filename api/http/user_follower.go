@@ -1,6 +1,7 @@
 package server
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -122,4 +123,35 @@ func (server *Server) DeleteFollower(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, "deleted")
+}
+
+type getUserFolloweesCountRequest struct {
+	Username string `uri:"username" binding:"required,alphanum"`
+}
+
+type getUserFolloweesCountResponse struct {
+	Count int64 `json:"count"`
+}
+
+func (server *Server) GetUserFolloweesCount(ctx *gin.Context) {
+	var req getUserFolloweesCountRequest
+	if err := ctx.ShouldBindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	count, err := server.db.GetFolloweesCount(ctx, req.Username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+			return
+		}
+
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	resp := getUserFolloweesCountResponse{count}
+
+	ctx.JSON(http.StatusOK, resp)
 }

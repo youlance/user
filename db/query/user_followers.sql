@@ -20,6 +20,10 @@ ORDER BY followee_id
 LIMIT $2
 OFFSET $3;
 
+-- name: GetFolloweesCount :one
+SELECT count(*) FROM user_followers
+WHERE follower_id = $1;
+
 -- name: DeleteFollower :exec
 DELETE FROM user_followers
 WHERE follower_id = $1 AND followee_id = $2;
