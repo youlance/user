@@ -50,3 +50,9 @@
 
     response:
     "deleted"
+
+- GetUserFolloweeCount [GET] [JSON] [/followees/count/{username}]
+    request:
+        youlance.com/followees/count/felani
+
+    response: [number of followees] e.x. 54
