@@ -1,0 +1,27 @@
+- CreateUser [POST] [JSON] [/user]
+    request: 
+    {
+        "username": "felan",
+        "password": "12345678",
+        "full_name": "felan felani",
+        "email": "felan@felan.com"
+    }
+        
+    response: 
+    {
+        "username": "felan",
+        "full_name": "felan felani",
+        "email": "felan@felan.com",
+        "password_changed_at": "felan tarikh",
+        "created_at": "felan_tarikh"
+    }
+
+- GetUser [GET] [JSON] [/user/{username}]
+    response:
+    {
+        "username": "felan",
+        "full_name": "felan felani",
+        "email": "felan@felan.com",
+        "password_changed_at": "felan tarikh",
+        "created_at": "felan_tarikh"
+    }

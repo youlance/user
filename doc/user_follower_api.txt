@@ -1,0 +1,52 @@
+- CreateFollower [POST] [JSON] [/follower]
+    request: 
+    {
+        "follower_id": "felan",
+        "followee_id": "felan2"
+    }
+        
+    response: 
+    {
+        "follower_id": "felan",
+        "followee_id": "felan2"
+    }
+
+- ListFollowers [POST] [JSON] [/followers]
+    request:
+    {
+        "followee_id": "felan",
+        "page_id": 1,
+        "page_size": 10
+    }
+
+    response:
+    {
+        [
+            // list of the given users followers.
+        ]
+    }
+
+- ListFollowees [POST] [JSON] [/followees]
+    request:
+    {
+        "follower_id": "felan",
+        "page_id": 1,
+        "page_size": 10
+    }
+
+    response:
+    {
+        [
+            // list of the given users followees.
+        ]
+    }
+
+- DeleteFollower [DELETE] [JSON] [/follower]
+    request:
+    {
+        "follower_id": "felan",
+        "followee_id": "felan2"
+    }
+
+    response:
+    "deleted"
