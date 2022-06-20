@@ -46,7 +46,7 @@ func (server *Server) CreateUserFollower(ctx *gin.Context) {
 type listFollowersRequest struct {
 	FolloweeID string `json:"followee_id" binding:"required"`
 	PageID     int32  `json:"page_id" binding:"required,min=1"`
-	PageSize   int32  `json:"page_size" binding:"required,min=5,max=10"`
+	PageSize   int32  `json:"page_size" binding:"required"`
 }
 
 func (server *Server) ListFollowers(ctx *gin.Context) {
@@ -74,7 +74,7 @@ func (server *Server) ListFollowers(ctx *gin.Context) {
 type listFolloweesRequest struct {
 	FollowerID string `json:"follower_id" binding:"required"`
 	PageID     int32  `json:"page_id" binding:"required,min=1"`
-	PageSize   int32  `json:"page_size" binding:"required,min=5,max=10"`
+	PageSize   int32  `json:"page_size" binding:"required"`
 }
 
 func (server *Server) ListFollowees(ctx *gin.Context) {

@@ -11,7 +11,7 @@
         "followee_id": "felan2"
     }
 
-- ListFollowers [POST] [JSON] [/followers]
+- ListFollowers [GET] [JSON] [/followers]
     request:
     {
         "followee_id": "felan",
@@ -26,7 +26,7 @@
         ]
     }
 
-- ListFollowees [POST] [JSON] [/followees]
+- ListFollowees [GET] [JSON] [/followees]
     request:
     {
         "follower_id": "felan",
