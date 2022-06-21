@@ -57,6 +57,18 @@ func (q *Queries) GetFolloweesCount(ctx context.Context, followerID string) (int
 	return count, err
 }
 
+const getFollowersCount = `-- name: GetFollowersCount :one
+SELECT count(*) FROM user_followers
+WHERE followee_id = $1
+`
+
+func (q *Queries) GetFollowersCount(ctx context.Context, followeeID string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getFollowersCount, followeeID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const listFollowees = `-- name: ListFollowees :many
 SELECT follower_id, followee_id FROM user_followers
 WHERE follower_id = $1

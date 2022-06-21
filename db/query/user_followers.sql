@@ -24,6 +24,11 @@ OFFSET $3;
 SELECT count(*) FROM user_followers
 WHERE follower_id = $1;
 
+-- name: GetFollowersCount :one
+SELECT count(*) FROM user_followers
+WHERE followee_id = $1;
+
+
 -- name: DeleteFollower :exec
 DELETE FROM user_followers
 WHERE follower_id = $1 AND followee_id = $2;

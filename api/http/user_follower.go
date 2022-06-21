@@ -155,3 +155,34 @@ func (server *Server) GetUserFolloweesCount(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, resp)
 }
+
+type getUserFollowersCountRequest struct {
+	Username string `uri:"username" binding:"required,alphanum"`
+}
+
+type getUserFollowersCountResponse struct {
+	Count int64 `json:"count"`
+}
+
+func (server *Server) GetUserFollowersCount(ctx *gin.Context) {
+	var req getUserFollowersCountRequest
+	if err := ctx.ShouldBindUri(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	count, err := server.db.GetFollowersCount(ctx, req.Username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+			return
+		}
+
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	resp := getUserFollowersCountResponse{count}
+
+	ctx.JSON(http.StatusOK, resp)
+}

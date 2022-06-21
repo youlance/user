@@ -36,6 +36,7 @@ func (server *Server) setupRouter() {
 	router.GET("/followers", server.ListFollowers)
 	router.GET("/followees", server.ListFollowees)
 	router.GET("/followees/count/:username", server.GetUserFolloweesCount)
+	router.GET("/followers/count/:username", server.GetUserFollowersCount)
 	router.DELETE("/follower", server.DeleteFollower)
 
 	server.router = router
