@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	server "github.com/youlance/user/api/http"
@@ -15,7 +16,10 @@ func main() {
 		log.Fatal("cannot load config:", err)
 	}
 
-	conn, err := sql.Open(config.DBDriver, config.DBSource)
+	DSN := "postgresql://" + config.DBUser + ":" + config.DBPass + "@" + config.DBAddress + "/" + config.DBName + "?sslmode=disable"
+	fmt.Print(DSN)
+
+	conn, err := sql.Open(config.DBDriver, DSN)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
