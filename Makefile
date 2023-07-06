@@ -33,4 +33,10 @@ sqlc:
 server:
 	go run main.go
 
+build-image:
+	docker build -t userservice-image -f Dockerfile .
+
+run-container:
+	docker run --net=host --rm -d --name userservice userservice-image
+
 .PHONY: tidy migrate_create postgres createdb dropdb migrateup migrateup1 migratedown migratedown1 sqlc server
